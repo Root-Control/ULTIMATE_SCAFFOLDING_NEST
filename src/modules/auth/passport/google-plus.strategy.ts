@@ -1,10 +1,11 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { use } from 'passport';
+import { v1 } from 'uuid';
 
 import { GOOGLE_CONFIG_TOKEN, USER_MODEL_TOKEN } from '../../../server.constants';
 import { IGoogleConfig } from '../interfaces/google-config.interface';
-import { IUser } from '../../user/interfaces/user.interface';
+import { IUser } from '../../users/interfaces/user.interface';
 
 const GoogleTokenStrategy = require('passport-google-plus-token');
 
@@ -23,27 +24,32 @@ export class GoogleStrategy {
       clientSecret: this.googleConfig.client_secret
     }, async (accessToken: string, refreshToken: string, profile: any, done: Function) => {
       try {
-        const existingUser: IUser = await this.userModel.findOne({ 'google.id': profile.id });
+        // Set the provider data and include tokens
+        var providerData = profile._json;
+        providerData.accessToken = accessToken;
+        providerData.refreshToken = refreshToken;
+        const existingUser = await this.userModel.findOne({ email: profile.emails[0].value });
 
         if (existingUser) {
           return done(null, existingUser);
         }
-
-        const { id, displayName } = profile;
-        const email: string = profile.emails.shift().value;
-        const user: IUser = new this.userModel({
-          method: 'google',
-          roles: ['user'],
-          google: {
-            id,
-            email,
-            displayName
-          }
-        });
-
+        // Create the user OAuth profile
+        var providerUserProfile = {
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName,
+          displayName: profile.displayName,
+          email: profile.emails[0].value,
+          username: profile.username,
+          profileImageURL: (providerData.picture) ? providerData.picture : providerData.image.url,
+          provider: 'google',
+          providerIdentifierField: 'id',
+          providerData: providerData
+        };
+        if (!providerUserProfile.username) providerUserProfile.username = v1();
+        const user = new this.userModel(providerUserProfile);
         done(null, await user.save());
-      } catch (err) {
-        done(err, null);
+      } catch (ex) {
+        done(ex, null);
       }
     }));
   }

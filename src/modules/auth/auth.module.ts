@@ -13,7 +13,7 @@ import { FacebookStrategy } from './passport/facebook.strategy';
 import { TwitterStrategy } from './passport/twitter.strategy';
 import { GoogleStrategy } from './passport/google-plus.strategy';
 
-import { UserModule } from '../user/user.module';
+import { UsersModule } from '../users/users.module';
 import { authProviders } from './auth.providers';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
@@ -21,7 +21,7 @@ import { bodyValidatorMiddleware } from './middlewares/body-validator.middleware
 import { Verifier } from './passport/verifier';
 
 @Module({
-  imports: [UserModule],
+  imports: [UsersModule],
   providers: [
     ...authProviders,
     AuthService,

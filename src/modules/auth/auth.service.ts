@@ -10,7 +10,7 @@ import {
   TWITTER_CONFIG_TOKEN,
   GOOGLE_CONFIG_TOKEN
 } from '../../server.constants';
-import { IUser } from '../user/interfaces/user.interface';
+import { IUser } from '../users/interfaces/user.interface';
 import { IToken } from './interfaces/token.interface';
 import { IFacebookConfig } from './interfaces/facebook-config.interface';
 import { ITwitterConfig } from './interfaces/twitter-config.interface';
@@ -36,10 +36,10 @@ export class AuthService {
     const newUser: IUser = new this.userModel({
       method: 'local',
       roles: ['user'],
+      displayName: `${user.firstName} ${user.lastName}`,
       local: {
         firstName: user.firstName,
         lastName: user.lastName,
-        displayName: `${user.firstName} ${user.lastName}`,
         email: user.email,
         salt,
         hashedPassword: generateHashedPassword(salt, user.password)

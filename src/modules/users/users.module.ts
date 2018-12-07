@@ -1,9 +1,9 @@
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 
 import { DatabaseModule } from '../database/database.module';
-import { UserController } from './user.controller';
-import { userProviders } from './user.providers';
-import { UserService } from './user.service';
+import { UsersController } from './users.controller';
+import { userProviders } from './users.providers';
+import { UserService } from './users.service';
 
 import { UserIdMiddleware } from './middlewares/userbyId.middleware';
 //  Middlewares
@@ -11,7 +11,7 @@ import { bodyValidatorMiddleware } from '../auth/middlewares/body-validator.midd
 
 @Module({
   imports: [DatabaseModule],
-  controllers: [UserController],
+  controllers: [UsersController],
   providers: [
     ...userProviders,
     UserService
@@ -20,13 +20,14 @@ import { bodyValidatorMiddleware } from '../auth/middlewares/body-validator.midd
     ...userProviders
   ]
 })
-export class UserModule implements NestModule{
+export class UsersModule implements NestModule{
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(bodyValidatorMiddleware)
       .forRoutes('users/signup');
 
     consumer.apply(UserIdMiddleware)
-      .forRoutes('users/:id');
+      .forRoutes({ path: 'users/:id', method: RequestMethod.ALL });
+      //  users id calling middleware for findById users before run another methods like "delete/update/read"
   }
 }

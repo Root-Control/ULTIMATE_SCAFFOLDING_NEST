@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { use } from 'passport';
 import { Strategy } from 'passport-local';
 
-import { IUser } from '../../user/interfaces/user.interface';
+import { IUser } from '../../users/interfaces/user.interface';
 import { generateHashedPassword, generateSalt } from '../../../utilities/encryption';
 import { MESSAGES, USER_MODEL_TOKEN } from '../../../server.constants';
 
@@ -21,13 +21,13 @@ export class LocalStrategy {
       passwordField: 'password'
     }, async (email: string, password: string, done: Function) => {
       try {
-        const user: IUser = await this.userModel.findOne({ 'local.email': email });
+        const user: IUser = await this.userModel.findOne({ email: email });
 
         if (!user) {
           return done(new UnauthorizedException(MESSAGES.UNAUTHORIZED_INVALID_EMAIL), false);
         }
 
-        if (generateHashedPassword(user.local.salt, password) !== user.local.hashedPassword) {
+        if (generateHashedPassword(user.salt, password) !== user.password) {
           return done(new UnauthorizedException(MESSAGES.UNAUTHORIZED_INVALID_PASSWORD), false);
         }
 

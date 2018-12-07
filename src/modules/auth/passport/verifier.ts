@@ -1,7 +1,7 @@
 import { MiddlewareFunction, BadRequestException, NestMiddleware, UnauthorizedException, Injectable, Inject } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Model } from 'mongoose';
-import { IUser } from '../../user/interfaces/user.interface';
+import { IUser } from '../../users/interfaces/user.interface';
 import { MESSAGES, USER_MODEL_TOKEN } from '../../../server.constants';
 
 @Injectable()

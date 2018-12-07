@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { AuthService } from '../auth.service';
 import { SERVER_CONFIG } from '../../../server.constants';
-import { IUser } from '../../user/interfaces/user.interface';
+import { IUser } from '../../users/interfaces/user.interface';
 import { IJwtPayload } from '../interfaces/jwt-payload.interface';
 
 @Injectable()

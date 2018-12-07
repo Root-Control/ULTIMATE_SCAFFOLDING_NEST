@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext, Inject } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { IUser } from '../modules/user/interfaces/user.interface';
+import { IUser } from '../modules/users/interfaces/user.interface';
 import { Model } from 'mongoose';
 import { USER_MODEL_TOKEN, SERVER_CONFIG } from '../server.constants';
 

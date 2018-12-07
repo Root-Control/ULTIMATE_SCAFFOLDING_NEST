@@ -41,6 +41,7 @@
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.2",
     "typescript": "^2.8.0",
+    "uuid": "^3.3.2",
     "ws": "^5.1.1"
   },
   "devDependencies": {
@@ -57,6 +58,7 @@
     "@types/passport-jwt": "^3.0.1",
     "@types/passport-local": "^1.0.33",
     "@types/request": "^2.47.1",
+    "@types/uuid": "^3.4.4",
     "@types/ws": "^3.0.2",
     "jest": "^20.0.4",
     "supertest": "^3.1.0",

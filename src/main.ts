@@ -10,11 +10,10 @@ async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
   app.enableCors();
   app.useStaticAssets(join(__dirname, '/../public'));
-  app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()));
+  //app.useWebSocketAdapter(new WsAdapter(app.getHttpServer()));
   app.setGlobalPrefix('api');
   await app.listen(environment.get('HTTP_SERVER_PORT'));
+  console.log(`Environment -> ${environment.get('NODE_ENV')}`);
+  console.log(`Port -> ${environment.get('HTTP_SERVER_PORT')}`);
 }
-const envVariables = new EnvironmentService('.env');
-
-console.log(`Environment -> ${envVariables.get('NODE_ENV')}`);
 bootstrap();

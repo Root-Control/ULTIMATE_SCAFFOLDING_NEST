@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { use } from 'passport';
 
 import { USER_MODEL_TOKEN, TWITTER_CONFIG_TOKEN } from '../../../server.constants';
-import { IUser } from '../../user/interfaces/user.interface';
+import { IUser } from '../../users/interfaces/user.interface';
 import { ITwitterConfig } from '../interfaces/twitter-config.interface';
 
 const TwitterTokenStrategy = require('passport-twitter-token');
@@ -33,10 +33,10 @@ export class TwitterStrategy {
         const user: IUser = new this.userModel({
           method: 'twitter',
           roles: ['user'],
+          displayName,
           twitter: {
             id,
-            username,
-            displayName,
+            username
           }
         });
 
